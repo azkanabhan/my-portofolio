@@ -392,7 +392,7 @@ function HeroSection() {
           hidden: {},
           show: { transition: { staggerChildren: 0.12 } },
         }}
-        className=" items-center flex gap-10 lg:grid-cols-[360px,1fr] lg:gap-16"
+        className=" items-center lg:flex gap-10 lg:grid-cols-[360px,1fr] lg:gap-16"
       >
         <motion.div
           variants={fadeUp}
