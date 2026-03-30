@@ -398,7 +398,7 @@ function HeroSection() {
           variants={fadeUp}
           className="mx-auto w-full max-w-[320px] lg:mx-0 lg:max-w-[360px]"
         >
-          <div className="glass-card relative overflow-hidden rounded-3xl p-3">
+          <div className="hidden lg:block glass-card relative overflow-hidden rounded-3xl p-3 my-10">
             <div className="absolute inset-x-4 top-0 h-20 bg-gradient-to-b from-sky-300/30 to-transparent blur-2xl" />
             <div className="relative overflow-hidden rounded-2xl border border-white/20">
               <Image
