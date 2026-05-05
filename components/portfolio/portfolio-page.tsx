@@ -4,11 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import {
   ArrowUpRight,
   Award,
+  Clock,
   Globe,
   Link2,
+  Lock,
   Mail,
   MapPin,
   SendHorizontal,
@@ -21,12 +24,62 @@ import {
   skillGroups,
   summaryPoints,
 } from "@/components/portfolio/data";
+
 import SectionShell from "@/components/portfolio/section-shell";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0 },
 };
+
+function ProjectStatusPopover({
+  groupName,
+  title,
+  description,
+  icon: Icon,
+}: {
+  groupName: "live" | "gh";
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}) {
+  const visible =
+    groupName === "live"
+      ? "group-hover/live:translate-y-0 group-hover/live:opacity-100 group-hover/live:scale-100"
+      : "group-hover/gh:translate-y-0 group-hover/gh:opacity-100 group-hover/gh:scale-100";
+
+  return (
+    <div
+      className={`pointer-events-none absolute bottom-full left-1/2 z-20 mb-3 w-max max-w-[min(288px,calc(100vw-2rem))] -translate-x-1/2 translate-y-2 scale-95 opacity-0 transition-all duration-300 ease-out ${visible}`}
+      role="tooltip"
+    >
+      <div className="relative rounded-xl bg-gradient-to-br from-sky-400/35 via-white/12 to-indigo-400/25 p-px shadow-2xl shadow-sky-950/40">
+        <div className="relative overflow-hidden rounded-[11px] border border-white/10 bg-slate-950/95 px-3.5 py-3 backdrop-blur-xl">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-sky-500/15 via-transparent to-indigo-600/10" />
+          <div className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/45 to-transparent" />
+
+          <div className="relative flex gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-sky-300/25 bg-sky-400/15 text-sky-200 shadow-inner shadow-sky-950/30">
+              <Icon className="h-5 w-5" strokeWidth={1.75} />
+            </div>
+            <div className="min-w-0 pt-0.5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-sky-200/90">
+                {groupName === "live" ? "Availability" : "Access"}
+              </p>
+              <p className="mt-1 text-sm font-semibold leading-snug text-slate-50">
+                {title}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                {description}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="absolute -bottom-1.5 left-1/2 z-10 h-3 w-3 -translate-x-1/2 rotate-45 border-b border-r border-white/15 bg-slate-950/95 shadow-sm backdrop-blur-xl" />
+    </div>
+  );
+}
 
 export default function PortfolioPage() {
   const [cursor, setCursor] = useState({ x: -1000, y: -1000 });
@@ -182,11 +235,20 @@ export default function PortfolioPage() {
             {projects.map((project) => (
               <motion.article
                 key={project.name}
-                className="glass-card group rounded-2xl p-6"
+                className="glass-card rounded-2xl p-6"
                 whileHover={{ y: -8 }}
                 transition={{ duration: 0.2 }}
-              >
-                <div className="mb-5 h-40 rounded-xl border border-white/20 bg-gradient-to-br from-slate-700/30 via-slate-600/20 to-sky-500/20" />
+              > 
+                {/* Ini gambar imagenya */}
+                <div className="mb-5 h-40 rounded-xl border border-white/20 overflow-hidden relative">
+                  <Image
+                    src={project.image}
+                    alt={project.alt_image}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
                 <h3 className="text-xl font-semibold text-slate-100">
                   {project.name}
                 </h3>
@@ -209,20 +271,59 @@ export default function PortfolioPage() {
                     </span>
                   ))}
                 </div>
-                {/* <div className="mt-6 flex gap-3 text-sm">
-                  <Link
-                    href={project.liveUrl}
-                    className="inline-flex items-center gap-1 rounded-full bg-white/90 px-4 py-2 font-semibold text-slate-900 transition-transform hover:-translate-y-0.5"
-                  >
-                    Live Demo <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href={project.githubUrl}
-                    className="inline-flex items-center gap-1 rounded-full border border-white/25 px-4 py-2 font-semibold text-slate-100 transition-colors hover:bg-white/10"
-                  >
-                    GitHub <Globe className="h-4 w-4" />
-                  </Link>
-                </div> */}
+                <div className="mt-6 flex gap-3 text-sm">
+                  {/* LIVE DEMO */}
+                  {project.liveUrl !== "#" ? (
+                    <Link
+                      href={project.liveUrl}
+                      className="group inline-flex items-center gap-1 rounded-full bg-white/90 px-4 py-2 font-semibold text-slate-900 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      Live Demo
+                      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    </Link>
+                  ) : (
+                    <div
+                      className="group/live relative inline-flex cursor-default items-center gap-1 rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold text-slate-300 transition-all duration-300 hover:-translate-y-0.5 hover:border-sky-300/45 hover:bg-sky-400/15 hover:text-slate-100 hover:shadow-lg hover:shadow-sky-500/20"
+                      aria-label="Live demo coming soon"
+                    >
+                      Live Demo
+                      <ArrowUpRight className="h-4 w-4 opacity-60 transition-all duration-300 group-hover/live:opacity-90 group-hover/live:text-sky-200" />
+
+                      <ProjectStatusPopover
+                        groupName="live"
+                        icon={Clock}
+                        title="Coming soon"
+                        description="A public demo is in progress — link will go live when deployment is ready."
+                      />
+                    </div>
+                  )}
+
+                  {/* GITHUB */}
+                  {project.githubUrl !== "#" ? (
+                    <Link
+                      href={project.githubUrl}
+                      className="group inline-flex items-center gap-1 rounded-full border border-white/25 px-4 py-2 font-semibold text-slate-100 transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:shadow-lg"
+                    >
+                      GitHub
+                      <Globe className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                    </Link>
+                  ) : (
+                    <div
+                      className="group/gh relative inline-flex cursor-default items-center gap-1 rounded-full border border-white/25 bg-white/5 px-4 py-2 font-semibold text-slate-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-sky-300/40 hover:bg-sky-400/10 hover:text-slate-200 hover:shadow-lg hover:shadow-sky-500/15"
+                      aria-label="GitHub repository is private"
+                    >
+                      GitHub
+                      <Globe className="h-4 w-4 opacity-60 transition-all duration-300 group-hover/gh:opacity-90 group-hover/gh:text-sky-200" />
+
+                      <ProjectStatusPopover
+                        groupName="gh"
+                        icon={Lock}
+                        title="Private repository"
+                        description="Source isn’t published for this build — happy to walk through architecture on request."
+                      />
+                    </div>
+                  )}
+                </div>
               </motion.article>
             ))}
           </div>
@@ -271,7 +372,7 @@ export default function PortfolioPage() {
             {certifications.map((certification) => (
               <motion.article
                 key={certification}
-                className="glass-card flex items-start gap-3 rounded-2xl p-5"
+                className="glass-card flex items-center gap-3 rounded-2xl p-5"
                 whileHover={{ y: -5 }}
               >
                 <Award className="mt-0.5 h-5 w-5 text-sky-300" />
