@@ -1,25 +1,21 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 type AnimatedSectionProps = {
   children: React.ReactNode;
   className?: string;
+  /** Stagger order so each block rises in sequence (very visible on load). */
+  revealIndex?: number;
 };
 
 export default function AnimatedSection({
   children,
   className,
+  revealIndex = 0,
 }: AnimatedSectionProps) {
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 40, scale: 0.985 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.65, ease: "easeOut" }}
+    <div
+      className={["section-reveal", className].filter(Boolean).join(" ")}
+      style={{ "--reveal-index": revealIndex } as React.CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
