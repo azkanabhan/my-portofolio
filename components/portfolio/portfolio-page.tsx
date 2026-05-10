@@ -145,93 +145,102 @@ export default function PortfolioPage() {
           eyebrow="Featured Projects"
           title="Case studies with practical business impact."
         >
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-6">
             {projects.map((project) => (
               <article
                 key={project.name}
-                className="glass-card rounded-2xl p-6 transition-transform duration-200 hover:-translate-y-2"
+                className="glass-card flex flex-col rounded-xl p-2.5 transition-transform duration-200 sm:rounded-2xl sm:p-4 md:p-6 md:hover:-translate-y-2"
               >
-                <div className="relative mb-5 h-40 overflow-hidden rounded-xl border border-white/20">
+                <div className="relative mb-2 h-[4.5rem] shrink-0 overflow-hidden rounded-lg border border-white/20 sm:mb-3 sm:h-28 md:mb-5 md:h-40 md:rounded-xl">
                   <Image
                     src={project.image}
                     alt={project.alt_image}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 45vw, 50vw"
                   />
                 </div>
 
-                <h3 className="text-xl font-semibold text-slate-100">
-                  {project.name}
-                </h3>
-                <p className="mt-2 text-sm text-slate-300">{project.description}</p>
-                <p className="mt-3 text-sm text-sky-100">
-                  <span className="font-semibold text-sky-300">Impact:</span>{" "}
-                  {project.impact}
-                </p>
-                <p className="mt-2 text-sm text-slate-300">
-                  <span className="font-semibold text-slate-200">Role:</span>{" "}
-                  {project.role}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.stack.map((stack) => (
-                    <span
-                      key={stack}
-                      className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-slate-200"
-                    >
-                      {stack}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-6 flex gap-3 text-sm">
-                  {project.liveUrl !== "#" ? (
-                    <Link
-                      href={project.liveUrl}
-                      className="group inline-flex items-center gap-1 rounded-full bg-white/90 px-4 py-2 font-semibold text-slate-900 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
-                    >
-                      Live Demo
-                      <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    </Link>
-                  ) : (
-                    <div
-                      className="group/live relative inline-flex cursor-default items-center gap-1 rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold text-slate-300 transition-transform duration-200 hover:-translate-y-0.5 hover:border-sky-300/45 hover:bg-sky-400/15 hover:text-slate-100 hover:shadow-lg hover:shadow-sky-500/20"
-                      aria-label="Live demo coming soon"
-                    >
-                      Live Demo
-                      <ArrowUpRight className="h-4 w-4 opacity-60 transition-opacity duration-200 group-hover/live:opacity-90 group-hover/live:text-sky-200" />
+                <div className="flex min-h-0 flex-1 flex-col gap-1.5 sm:gap-2">
+                  <h3 className="line-clamp-2 text-[0.7rem] font-semibold leading-snug text-slate-100 sm:text-sm md:line-clamp-none md:text-xl">
+                    {project.name}
+                  </h3>
+                  <p className="line-clamp-2 text-[0.65rem] leading-relaxed text-slate-300 sm:line-clamp-3 sm:text-xs md:line-clamp-none md:text-sm">
+                    {project.description}
+                  </p>
+                  <p className="line-clamp-2 text-[0.6rem] leading-snug text-sky-100 sm:text-xs md:line-clamp-none md:text-sm">
+                    <span className="font-semibold text-sky-300">Impact:</span>{" "}
+                    {project.impact}
+                  </p>
+                  <p className="line-clamp-2 text-[0.6rem] leading-snug text-slate-300 sm:text-xs md:line-clamp-none md:text-sm">
+                    <span className="font-semibold text-slate-200">Role:</span>{" "}
+                    {project.role}
+                  </p>
+                  <div className="mt-0.5 flex flex-wrap gap-1 sm:mt-1 sm:gap-1.5 md:mt-2 md:gap-2">
+                    {project.stack.map((stack) => (
+                      <span
+                        key={stack}
+                        className="rounded-full border border-white/20 bg-white/10 px-1.5 py-px text-[0.55rem] text-slate-200 sm:px-2 sm:py-0.5 sm:text-[0.65rem] md:px-3 md:py-1 md:text-xs"
+                      >
+                        {stack}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-auto flex flex-col gap-1.5 pt-2 sm:flex-row sm:flex-wrap sm:gap-2 md:mt-4 md:gap-3">
+                    {project.liveUrl !== "#" ? (
+                      <Link
+                        href={project.liveUrl}
+                        className="group inline-flex w-full min-w-0 flex-1 items-center justify-center gap-0.5 rounded-full bg-white/90 px-2 py-1.5 text-[0.65rem] font-semibold text-slate-900 transition-transform duration-200 sm:w-auto sm:flex-none sm:px-3 sm:py-2 sm:text-xs md:px-4 md:text-sm hover:-translate-y-1 hover:shadow-lg"
+                      >
+                        <span className="truncate">
+                          Live<span className="hidden sm:inline"> Demo</span>
+                        </span>
+                        <ArrowUpRight className="h-3 w-3 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 md:group-hover:translate-x-1 md:group-hover:-translate-y-1" />
+                      </Link>
+                    ) : (
+                      <div
+                        className="group/live relative inline-flex w-full min-w-0 flex-1 cursor-default items-center justify-center gap-0.5 rounded-full border border-white/20 bg-white/10 px-2 py-1.5 text-[0.65rem] font-semibold text-slate-300 transition-transform duration-200 sm:w-auto sm:flex-none sm:px-3 sm:py-2 sm:text-xs md:px-4 md:text-sm hover:-translate-y-0.5 hover:border-sky-300/45 hover:bg-sky-400/15 hover:text-slate-100 hover:shadow-lg hover:shadow-sky-500/20"
+                        aria-label="Live demo coming soon"
+                      >
+                        <span className="truncate">
+                          Live<span className="hidden sm:inline"> Demo</span>
+                        </span>
+                        <ArrowUpRight className="h-3 w-3 shrink-0 opacity-60 transition-opacity duration-200 group-hover/live:opacity-90 group-hover/live:text-sky-200 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
 
-                      <ProjectStatusPopover
-                        groupName="live"
-                        icon={Clock}
-                        title="Coming soon"
-                        description="A public demo is in progress — link will go live when deployment is ready."
-                      />
-                    </div>
-                  )}
+                        <ProjectStatusPopover
+                          groupName="live"
+                          icon={Clock}
+                          title="Coming soon"
+                          description="A public demo is in progress — link will go live when deployment is ready."
+                        />
+                      </div>
+                    )}
 
-                  {project.githubUrl !== "#" ? (
-                    <Link
-                      href={project.githubUrl}
-                      className="group inline-flex items-center gap-1 rounded-full border border-white/25 px-4 py-2 font-semibold text-slate-100 transition-transform duration-200 hover:-translate-y-1 hover:bg-white/10 hover:shadow-lg"
-                    >
-                      GitHub
-                      <Globe className="h-4 w-4 transition-transform duration-200 group-hover:rotate-12" />
-                    </Link>
-                  ) : (
-                    <div
-                      className="group/gh relative inline-flex cursor-default items-center gap-1 rounded-full border border-white/25 bg-white/5 px-4 py-2 font-semibold text-slate-400 transition-transform duration-200 hover:-translate-y-0.5 hover:border-sky-300/40 hover:bg-sky-400/10 hover:text-slate-200 hover:shadow-lg hover:shadow-sky-500/15"
-                      aria-label="GitHub repository is private"
-                    >
-                      GitHub
-                      <Globe className="h-4 w-4 opacity-60 transition-opacity duration-200 group-hover/gh:opacity-90 group-hover/gh:text-sky-200" />
+                    {project.githubUrl !== "#" ? (
+                      <Link
+                        href={project.githubUrl}
+                        className="group inline-flex w-full min-w-0 flex-1 items-center justify-center gap-0.5 rounded-full border border-white/25 px-2 py-1.5 text-[0.65rem] font-semibold text-slate-100 transition-transform duration-200 sm:w-auto sm:flex-none sm:px-3 sm:py-2 sm:text-xs md:px-4 md:text-sm hover:-translate-y-1 hover:bg-white/10 hover:shadow-lg"
+                      >
+                        <span className="truncate">GitHub</span>
+                        <Globe className="h-3 w-3 shrink-0 transition-transform duration-200 group-hover:rotate-12 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
+                      </Link>
+                    ) : (
+                      <div
+                        className="group/gh relative inline-flex w-full min-w-0 flex-1 cursor-default items-center justify-center gap-0.5 rounded-full border border-white/25 bg-white/5 px-2 py-1.5 text-[0.65rem] font-semibold text-slate-400 transition-transform duration-200 sm:w-auto sm:flex-none sm:px-3 sm:py-2 sm:text-xs md:px-4 md:text-sm hover:-translate-y-0.5 hover:border-sky-300/40 hover:bg-sky-400/10 hover:text-slate-200 hover:shadow-lg hover:shadow-sky-500/15"
+                        aria-label="GitHub repository is private"
+                      >
+                        <span className="truncate">GitHub</span>
+                        <Globe className="h-3 w-3 shrink-0 opacity-60 transition-opacity duration-200 group-hover/gh:opacity-90 group-hover/gh:text-sky-200 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
 
-                      <ProjectStatusPopover
-                        groupName="gh"
-                        icon={Lock}
-                        title="Private repository"
-                        description="Source isn’t published for this build — happy to walk through architecture on request."
-                      />
-                    </div>
-                  )}
+                        <ProjectStatusPopover
+                          groupName="gh"
+                          icon={Lock}
+                          title="Private repository"
+                          description="Source isn’t published for this build — happy to walk through architecture on request."
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </article>
             ))}
